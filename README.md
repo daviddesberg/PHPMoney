@@ -1,7 +1,7 @@
 PHPMoney
 ========
 
-PHPMoney is a unit-tested Money pattern implementation (sans currency) for PHP 5.3+
+PHPMoney is a unit-tested Money pattern implementation (sans currency -- which is on the TODO list) for PHP 5.3+
 
 ## Installation (composer) ##
 Add the following item to your `composer.json`'s require section:  `"lusitanian/phpmoney": "dev-master"`
