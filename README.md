@@ -3,7 +3,11 @@ PHPMoney
 
 PHPMoney is a unit-tested Money pattern implementation (sans currency) for PHP 5.3+
 
+## Installation (composer) ##
+Add the following item to your `composer.json`'s require section:  `"lusitanian/phpmoney": "dev-master"`
+
 ## Usage ##
+The classes are set up in a PSR-0 compliant manner and will work with any PSR-0 autoloader if you don't install the package with composer (which generates an autoloader automatically).
 The library includes a `MoneyFactory` that will create `Money` instances for you using the best-available `MathProvider` that will work on your installation of PHP.
 
 **Example Usage**
