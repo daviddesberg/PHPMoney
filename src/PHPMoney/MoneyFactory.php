@@ -29,7 +29,7 @@ class MoneyFactory
             } elseif( $hasBCMath ) {
                 $mathProviderClass .= 'BCMathProvider';
             } else {
-                // forced into using native provider with 4 bit integers since no bcmath is available, trigger a notice
+                // forced into using native provider with 4 bit integers since no bcmath is available
                 $mathProviderClass .= 'NativeMathProvider';
             }
         }
