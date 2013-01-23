@@ -46,12 +46,15 @@ class MathProvidersTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testMultiplyWholeNumbers()
+    public function testMultiplyNormal()
     {
         foreach($this->mathProviders as $mathProvider)
         {
             $providerName = get_class($mathProvider);
             $this->assertSame( '50', $mathProvider->multiply('5', '10'), "Multiplication (whole numbers) test failed for $providerName" );
+            $this->assertSame( '50', $mathProvider->multiply('5', '10.09') );
+            $this->assertSame( '49', $mathProvider->multiply('49.4', '1') );
+            $this->assertSame( '51', $mathProvider->multiply('5', '10.11') );
         }
     }
 
@@ -93,7 +96,7 @@ class MathProvidersTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testDivide()
+    public function testDivideNormal()
     {
         foreach($this->mathProviders as $mathProvider)
         {

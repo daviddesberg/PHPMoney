@@ -7,9 +7,12 @@ use PHPMoney\MathProvider\Exception\InvalidRoundingModeException;
  */
 class BCMathProvider implements MathProvider
 {
+    /** Scale for multiplication and division */
+    const MULTIPLICATION_DIVISION_SCALE = 5;
+
     /**
-     * @param $a string String representation of a numeric value.
-     * @param $b string String representation of a numeric value.
+     * @param $a string String representation of a whole numeric value.
+     * @param $b string String representation of a whole numeric value.
      * @return int
      */
     function compare($a, $b)
@@ -45,7 +48,7 @@ class BCMathProvider implements MathProvider
      */
     function multiply($a, $b, $roundingMode = self::ROUND_MODE_DEFAULT)
     {
-        $result = bcmul($a, $b, 1);
+        $result = bcmul($a, $b, self::MULTIPLICATION_DIVISION_SCALE);
         return $this->round($result, $roundingMode);
     }
 
@@ -57,30 +60,32 @@ class BCMathProvider implements MathProvider
      */
     function divide($a, $b, $roundingMode = self::ROUND_MODE_DEFAULT)
     {
-        $result = bcdiv($a, $b, 1);
+        $result = bcdiv($a, $b, self::MULTIPLICATION_DIVISION_SCALE);
         return $this->round($result, $roundingMode);
     }
 
     /**
-     * Rounds numbers that have a scale of 1 ONLY
+     * Rounds the results of the multiply/divide methods to whole numbers (since they are to be used as currency values)
      * @param string $number
      * @param int $roundingMode
      * @return string
      * @throws Exception\InvalidRoundingModeException
      */
-    private function round($number, $roundingMode = self::ROUND_MODE_DEFAULT)
+    public function round($number, $roundingMode = self::ROUND_MODE_DEFAULT)
     {
         if( !in_array( $roundingMode, array( self::ROUND_MODE_HALF_EVEN, self::ROUND_MODE_HALF_ODD, self::ROUND_MODE_HALF_DOWN, self::ROUND_MODE_HALF_UP ) ) ) {
             throw new InvalidRoundingModeException("Invalid rounding mode '{$roundingMode}' provided");
         }
 
-        if( strpos($number, '.' ) === false ) {
+        $decPosition = strpos($number, '.' );
+        if( $decPosition === false ) {
             return $number;
         }
 
-        $preDecimal = substr($number, 0, strlen($number) - 2);
-        $postDecimal = substr( $number, strlen($number) - 1 );
-        if( '0' === $postDecimal ) {
+        $preDecimal = substr($number, 0, $decPosition );
+        $postDecimal = substr( $number, $decPosition + 1 );
+
+        if( trim($postDecimal, '0') === '' ) {
             return bcdiv($number, 1, 0);
         }
 
@@ -95,7 +100,8 @@ class BCMathProvider implements MathProvider
             $subFunc = 'bcadd';
         }
 
-        if( $postDecimal ===  '5') {
+
+        if( rtrim($postDecimal, '0') ===  '5') {
             if( $roundingMode === self::ROUND_MODE_HALF_DOWN ) {
                 return $subFunc($number, '0.5', 0);
             } elseif( $roundingMode === self::ROUND_MODE_HALF_UP ) {
@@ -114,9 +120,9 @@ class BCMathProvider implements MathProvider
                 }
             }
         } else {
-            $postDecimal = (int) $postDecimal;
-            if( $postDecimal < 5 ) {
-                return bcdiv( $subFunc($number, '0.5', 0), '1' );
+            $fiveOperand = '5' . ( strlen($postDecimal) - 2 > 0 ) ?: str_pad('0', strlen($postDecimal) - 2);
+            if( $postDecimal[0] !== '0' && (int) $postDecimal <= (int) $fiveOperand ) { // if postDecimal == 5, it'll be handled up there
+                return bcdiv( $subFunc($number, '0.1', 0), '1' );
             } else {
                 return bcdiv( $addFunc($number, '0.5', 0), '1' );
             }
