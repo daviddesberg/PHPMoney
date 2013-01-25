@@ -118,30 +118,30 @@ class Money
 
     /**
      * Returns whether or not the value held by $this is the same as the value held by $money
-     * @param Money $money
+     * @param Money|string|int $money
      * @return bool
      */
-    public function equals(Money $money)
+    public function equals($money)
     {
         return $this->mathProvider->compare( ( string ) $this, ( string ) $money ) === 0;
     }
 
     /**
      * Returns whether or not the value held by $this is less than the value held by $money
-     * @param Money $money
+     * @param Money|string|int $money
      * @return bool
      */
-    public function lessThan(Money $money)
+    public function lessThan($money)
     {
         return $this->mathProvider->compare( ( string ) $this, ( string ) $money ) === -1;
     }
 
     /**
      * Returns whether or not the value held by $this is greater than the value held by $money
-     * @param Money $money
+     * @param Money|string|int $money
      * @return bool
      */
-    public function greaterThan(Money $money)
+    public function greaterThan($money)
     {
         return $this->mathProvider->compare( ( string ) $this, ( string ) $money ) === 1;
     }
