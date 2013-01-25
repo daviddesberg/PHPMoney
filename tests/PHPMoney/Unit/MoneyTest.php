@@ -39,9 +39,12 @@ class MoneyTest extends \PHPUnit_Framework_TestCase
         $this->assertSame( '1.00', $oneDollar->format() );
         $this->assertSame( '1,000,000,000.00', $oneBillionDollars->format() );
 
+        // alternate separators
+        $this->assertSame( '1-000-000-000_00', $oneBillionDollars->format('-', 2, '_') );
+
         // true,false doesn't matter for these
-        $this->assertSame( '1', $oneCent->format(true, 0) );
-        $this->assertSame( '10.0', $oneDollar->format(false, 1) );
+        $this->assertSame( '1', $oneCent->format(',', 0) );
+        $this->assertSame( '10.0', $oneDollar->format(',', 1) );
 
     }
 

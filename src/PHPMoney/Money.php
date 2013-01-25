@@ -31,28 +31,27 @@ class Money
     /**
      * Formats the value for output
      * e.g. if value is 100000, will output either 1,000.00 if commas is set to true and decimalPlaces is set to 2
-     * @param bool $commas
-     * @param int $decimalPlaces
+     * @param string $thousandsSeparator Separator for thousands.
+     * @param int $decimalPlaces Number spots the decimal places is towards the left of the number from its end.
+     * @param string $decimalPoint Separator for the decimal point.
      * @return string
      */
-    public function format($commas = true, $decimalPlaces = 2)
+    public function format($thousandsSeparator = ',', $decimalPlaces = 2, $decimalPoint = '.')
     {
         $value = $this->value;
 
         if( $decimalPlaces > 0 ) {
             if( strlen($value) > $decimalPlaces ) {
-                $value = substr($value, 0, strlen($value) - $decimalPlaces) . '.' . substr($value, strlen($value) - $decimalPlaces);
+                $value = substr($value, 0, strlen($value) - $decimalPlaces) . $decimalPoint . substr($value, strlen($value) - $decimalPlaces);
             } else {
                 $difference = $decimalPlaces - strlen($value);
-                $value = '.' . str_pad('0', $difference) . $value;
+                $value = $decimalPoint . str_pad('0', $difference) . $value;
             }
         }
 
-        if( $commas ) {
-            $value = preg_replace('/(?<=\\d)(?=(\\d{3})+(?!\\d))/', ',', $value);
-        }
+        $value = preg_replace('/(?<=\\d)(?=(\\d{3})+(?!\\d))/', $thousandsSeparator, $value);
 
-        if( $value[0] === '.' ) {
+        if( $value[0] === $decimalPoint ) {
             $value = '0' . $value;
         }
 
