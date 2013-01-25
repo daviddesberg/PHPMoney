@@ -11,12 +11,12 @@ class MoneyFactory
     /**
      * @param $mathProviderType string|null Type of math provider to create for the Money objects which will be created by this factory (string class name without namespace). If null, auto-determines.
      * @param $integerSize int The size of integer on this PHP install (defaults to PHP_INT_SIZE)
-     * @param $hasBCMath bool|null Whether or not the bcmath extension is enabled, leave null to auto-determine.
+     * @param $hasBCMath bool|null Whether or not the BCMath extension is enabled, leave null to auto-determine.
      */
     public function __construct($mathProviderType = null, $integerSize = PHP_INT_SIZE, $hasBCMath = null)
     {
         if( null === $hasBCMath ) {
-            $hasBCMath = extension_loaded('bcmath');
+            $hasBCMath = extension_loaded('BCMath');
         }
 
         $mathProviderClass = 'PHPMoney\\MathProvider\\';
@@ -29,7 +29,7 @@ class MoneyFactory
             } elseif( $hasBCMath ) {
                 $mathProviderClass .= 'BCMathProvider';
             } else {
-                // forced into using native provider with 4 bit integers since no bcmath is available
+                // forced into using native provider with 4 bit integers since no BCMath is available
                 $mathProviderClass .= 'NativeMathProvider';
             }
         }
