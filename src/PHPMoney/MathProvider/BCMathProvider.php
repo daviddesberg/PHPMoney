@@ -49,6 +49,9 @@ class BCMathProvider implements MathProvider
     function multiply($a, $b, $roundingMode = self::ROUND_MODE_DEFAULT)
     {
         $result = bcmul($a, $b, self::MULTIPLICATION_DIVISION_SCALE);
+        if( self::ROUND_MODE_NONE === $roundingMode ) {
+            return rtrim($result, '0');
+        }
         return $this->round($result, $roundingMode);
     }
 
@@ -61,6 +64,9 @@ class BCMathProvider implements MathProvider
     function divide($a, $b, $roundingMode = self::ROUND_MODE_DEFAULT)
     {
         $result = bcdiv($a, $b, self::MULTIPLICATION_DIVISION_SCALE);
+        if( self::ROUND_MODE_NONE === $roundingMode ) {
+            return rtrim($result, '0');
+        }
         return $this->round($result, $roundingMode);
     }
 

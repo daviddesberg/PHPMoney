@@ -74,13 +74,24 @@ class MoneyTest extends \PHPUnit_Framework_TestCase
         $oneDollar = new Money('100', $this->mathProvider);
         $fiftyCents = $oneDollar->divide('2');
         $this->assertSame( '50', (string) $fiftyCents );
+
+        $two = $oneDollar->divide( $fiftyCents );
+        $this->assertSame(2.0, (float) $two);
     }
 
     public function testMultiply()
     {
-        $oneDollar= new Money('100', $this->mathProvider);
+        $oneDollar = new Money('100', $this->mathProvider);
         $twoDollars = $oneDollar->multiply(2);
         $this->assertSame( '200', (string) $twoDollars );
+    }
+
+    public function testNonsensicalMultiply()
+    {
+        $oneDollar = new Money('100', $this->mathProvider);
+        $fiftyCents = new Money('50', $this->mathProvider);
+        $this->setExpectedException('PHPMoney\\Exception\\InvalidMultiplicandException');
+        $oneDollar->multiply($fiftyCents); // why would ya try to multiply money by money?
     }
 
     public function testComparisons()

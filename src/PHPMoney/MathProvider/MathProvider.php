@@ -7,6 +7,8 @@ namespace PHPMoney\MathProvider;
 
 interface MathProvider
 {
+    /** Do not round */
+    const ROUND_MODE_NONE = -2;
     /** Round halves up (4.5 --> 5) */
     const ROUND_MODE_HALF_UP = PHP_ROUND_HALF_UP;
     /** Round halves down (4.5 --> 4) */

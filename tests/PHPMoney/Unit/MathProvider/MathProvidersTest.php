@@ -115,6 +115,24 @@ class MathProvidersTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testMultiplyNoRound()
+    {
+        foreach($this->mathProviders as $mathProvider)
+        {
+            $providerName = get_class($mathProvider);
+            $this->assertSame(16.76, (float) $mathProvider->multiply('10', '1.676', $mathProvider::ROUND_MODE_NONE) );
+        }
+    }
+
+    public function testDivideNoRound()
+    {
+        foreach($this->mathProviders as $mathProvider)
+        {
+            $providerName = get_class($mathProvider);
+            $this->assertSame(2.4, (float) $mathProvider->divide('24', '10', $mathProvider::ROUND_MODE_NONE) );
+        }
+    }
+
     public function testThrowsInvalidRoundingModeException()
     {
         foreach($this->mathProviders as $mathProvider)

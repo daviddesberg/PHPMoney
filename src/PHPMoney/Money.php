@@ -1,6 +1,7 @@
 <?php
 namespace PHPMoney;
 use PHPMoney\Exception\InvalidArgumentException;
+use PHPMoney\Exception\InvalidMultiplicandException;
 use PHPMoney\MathProvider\MathProvider;
 
 /**
@@ -90,21 +91,29 @@ class Money
      * Divides $this by $divisor and returns a new value object.
      * Uses the default rounding method (ROUND_HALF_EVEN) which is preferred for financial calculations.
      * @param Money|int|float|string $divisor
-     * @return static
+     * @return static|string
      */
     public function divide($divisor)
     {
-        return new static( $this->mathProvider->divide( (string) $this, (string) $divisor ), $this->mathProvider );
+        if( is_scalar($divisor) ) {
+            return new static( $this->mathProvider->divide( (string) $this, (string) $divisor ), $this->mathProvider );
+        } else {
+            return $this->mathProvider->divide( ( string ) $this, ( string ) $divisor, MathProvider::ROUND_MODE_NONE );
+        }
     }
 
     /**
      * Multiplies $this by $multiplicand and returns a new value object.
      * Uses the default rounding method (ROUND_HALF_EVEN) which is preferred for financial calculations.
+     * @throws InvalidMultiplicandException
      * @param Money|int|float|string $multiplicand
      * @return static
      */
     public function multiply($multiplicand)
     {
+        if( !is_scalar($multiplicand) ) {
+            throw new InvalidMultiplicandException('Invalid multiplicand of type ' . gettype($multiplicand) . ' passed to Money::multiply');
+        }
         return new static( $this->mathProvider->multiply( (string) $this, (string) $multiplicand ), $this->mathProvider );
     }
 
