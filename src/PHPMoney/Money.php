@@ -105,7 +105,7 @@ class Money
      * Multiplies $this by $multiplicand and returns a new value object.
      * Uses the default rounding method (ROUND_HALF_EVEN) which is preferred for financial calculations.
      * @throws InvalidMultiplicandException
-     * @param Money|int|float|string $multiplicand
+     * @param int|float|string $multiplicand
      * @return Money
      */
     public function multiply($multiplicand)
