@@ -115,6 +115,18 @@ class Money
         }
         return new static( $this->mathProvider->multiply( (string) $this, (string) $multiplicand ), $this->mathProvider );
     }
+    
+    /**
+     * Returns a new Money object that contains the absolute value of $this
+     */
+    public function abs()
+    {
+        if( $this->lessThan(0) ) { 
+            return $this->multiply('-1');
+        } else {
+            return $this->multiply('1');
+        }
+    }
 
     /**
      * Returns whether or not the value held by $this is the same as the value held by $money
