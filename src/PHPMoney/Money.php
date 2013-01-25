@@ -69,7 +69,7 @@ class Money
     /**
      * Adds $money to $this and returns a new value object.
      * @param Money $money
-     * @return static
+     * @return Money
      */
     public function add(Money $money)
     {
@@ -79,7 +79,7 @@ class Money
     /**
      * Subtracts $money from $this and returns a new value object.
      * @param Money $money
-     * @return static
+     * @return Money
      */
     public function subtract(Money $money)
     {
@@ -90,7 +90,7 @@ class Money
      * Divides $this by $divisor and returns a new value object.
      * Uses the default rounding method (ROUND_HALF_EVEN) which is preferred for financial calculations.
      * @param Money|int|float|string $divisor
-     * @return static|string
+     * @return Money|string
      */
     public function divide($divisor)
     {
@@ -106,7 +106,7 @@ class Money
      * Uses the default rounding method (ROUND_HALF_EVEN) which is preferred for financial calculations.
      * @throws InvalidMultiplicandException
      * @param Money|int|float|string $multiplicand
-     * @return static
+     * @return Money
      */
     public function multiply($multiplicand)
     {
