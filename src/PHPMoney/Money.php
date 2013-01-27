@@ -38,7 +38,7 @@ class Money
      */
     public function format($thousandsSeparator = ',', $decimalPlaces = 2, $decimalPoint = '.')
     {
-        $value = $this->value;
+        $value = $this->getValue();
 
         if( $decimalPlaces > 0 ) {
             if( strlen($value) > $decimalPlaces ) {
@@ -59,21 +59,13 @@ class Money
     }
 
     /**
-     * @return string Value of object
-     */
-    public function __toString()
-    {
-        return $this->value;
-    }
-
-    /**
      * Adds $money to $this and returns a new value object.
      * @param Money $money
      * @return Money
      */
     public function add(Money $money)
     {
-        return new static( $this->mathProvider->add( (string) $this, (string) $money ), $this->mathProvider );
+        return new static( $this->mathProvider->add( $this->getValue(), $money->getValue() ), $this->mathProvider );
     }
 
     /**
@@ -83,7 +75,7 @@ class Money
      */
     public function subtract(Money $money)
     {
-        return new static( $this->mathProvider->subtract( (string) $this, (string) $money ), $this->mathProvider );
+        return new static( $this->mathProvider->subtract( $this->getValue(), $money->getValue() ), $this->mathProvider );
     }
 
     /**
@@ -94,10 +86,10 @@ class Money
      */
     public function divide($divisor)
     {
-        if( is_scalar($divisor) ) {
-            return new static( $this->mathProvider->divide( (string) $this, (string) $divisor ), $this->mathProvider );
+        if( $divisor instanceof Money ) {
+            return $this->mathProvider->divide( $this->getValue(), $divisor->getValue(), MathProvider::ROUND_MODE_NONE );
         } else {
-            return $this->mathProvider->divide( ( string ) $this, ( string ) $divisor, MathProvider::ROUND_MODE_NONE );
+            return new static( $this->mathProvider->divide( $this->getValue(), (string) $divisor ), $this->mathProvider );
         }
     }
 
@@ -113,7 +105,7 @@ class Money
         if( !is_scalar($multiplicand) ) {
             throw new InvalidMultiplicandException('Invalid multiplicand of type ' . gettype($multiplicand) . ' passed to Money::multiply');
         }
-        return new static( $this->mathProvider->multiply( (string) $this, (string) $multiplicand ), $this->mathProvider );
+        return new static( $this->mathProvider->multiply( $this->getValue(), (string) $multiplicand ), $this->mathProvider );
     }
     
     /**
@@ -135,7 +127,10 @@ class Money
      */
     public function equals($money)
     {
-        return $this->mathProvider->compare( ( string ) $this, ( string ) $money ) === 0;
+        if( $money instanceof Money ) {
+            $money = $money->getValue();
+        }
+        return $this->mathProvider->compare( $this->getValue(), (string) $money ) === 0;
     }
 
     /**
@@ -145,7 +140,10 @@ class Money
      */
     public function lessThan($money)
     {
-        return $this->mathProvider->compare( ( string ) $this, ( string ) $money ) === -1;
+        if( $money instanceof Money ) {
+            $money = $money->getValue();
+        }
+        return $this->mathProvider->compare( $this->getValue(), (string) $money ) === -1;
     }
 
     /**
@@ -155,6 +153,25 @@ class Money
      */
     public function greaterThan($money)
     {
-        return $this->mathProvider->compare( ( string ) $this, ( string ) $money ) === 1;
+        if( $money instanceof Money ) {
+            $money = $money->getValue();
+        }
+        return $this->mathProvider->compare( $this->getValue(), (string) $money ) === 1;
+    }
+
+    /**
+     * @return string Value of object
+     */
+    public function __toString()
+    {
+        return $this->getValue();
+    }
+
+    /**
+     * @return string Value of object
+     */
+    public function getValue()
+    {
+        return $this->value;
     }
 }

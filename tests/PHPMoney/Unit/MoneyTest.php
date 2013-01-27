@@ -11,7 +11,6 @@ use PHPMoney\Money;
 
 class MoneyTest extends \PHPUnit_Framework_TestCase
 {
-
     private $mathProvider;
 
     public function setUp()
@@ -95,6 +94,16 @@ class MoneyTest extends \PHPUnit_Framework_TestCase
         $fiftyCents = new Money('50', $this->mathProvider);
         $this->setExpectedException('PHPMoney\\Exception\\InvalidMultiplicandException');
         $oneDollar->multiply($fiftyCents); // why would ya try to multiply money by money?
+    }
+
+    public function testAbs()
+    {
+        $oneDollar = new Money('100', $this->mathProvider);
+        $this->assertEquals('100', $oneDollar->abs());
+
+        $negativeOneDollar = new Money('-100', $this->mathProvider);
+        $this->assertEquals('-100', $negativeOneDollar->getValue());
+        $this->assertEquals('100', $negativeOneDollar->abs());
     }
 
     public function testComparisons()
