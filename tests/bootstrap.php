@@ -11,9 +11,11 @@ namespace tests;
  * @codeCoverageIgnore
  */
 spl_autoload_register(function ($classname) {
-    $classname = ltrim($classname, '\\');
-    preg_match('/^(.+)?([^\\\\]+)$/U', $classname, $match);
-    $level = error_reporting(0);
-    include ( DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $match[1]) . str_replace(['\\', '_'], DIRECTORY_SEPARATOR, $match[2]) . '.php' );
-    error_reporting($level);
+    $file = dirname(__DIR__) . DIRECTORY_SEPARATOR
+          . 'src' . DIRECTORY_SEPARATOR
+          . str_replace('\\', DIRECTORY_SEPARATOR, $classname)
+          . '.php';
+    if (file_exists($file)) {
+        include $file;
+    }
 });
