@@ -15,18 +15,18 @@ class MoneyFactory
      */
     public function __construct($mathProviderType = null, $integerSize = PHP_INT_SIZE, $hasBCMath = null)
     {
-        if( null === $hasBCMath ) {
+        if (null === $hasBCMath) {
             $hasBCMath = extension_loaded('BCMath');
         }
 
         $mathProviderClass = 'PHPMoney\\MathProvider\\';
 
-        if( is_string($mathProviderType) ) {
+        if (is_string($mathProviderType)) {
             $mathProviderClass .= $mathProviderType;
         } else {
-            if( $integerSize >= 8 ) {
+            if ($integerSize >= 8) {
                 $mathProviderClass .= 'NativeMathProvider';
-            } elseif( $hasBCMath ) {
+            } elseif ($hasBCMath) {
                 $mathProviderClass .= 'BCMathProvider';
             } else {
                 // forced into using native provider with 4 bit integers since no BCMath is available
