@@ -20,7 +20,7 @@ class Money
      */
     public function __construct($value, MathProvider $mathProvider)
     {
-        if( !is_int($value) && !is_string($value) ) {
+        if (!is_int($value) && !is_string($value)) {
             throw new InvalidArgumentException('Invalid $value type, expected int|string but got ' . gettype($value));
         }
 
@@ -40,8 +40,8 @@ class Money
     {
         $value = $this->getValue();
 
-        if( $decimalPlaces > 0 ) {
-            if( strlen($value) > $decimalPlaces ) {
+        if ($decimalPlaces > 0) {
+            if (strlen($value) > $decimalPlaces) {
                 $value = substr($value, 0, strlen($value) - $decimalPlaces) . $decimalPoint . substr($value, strlen($value) - $decimalPlaces);
             } else {
                 $difference = $decimalPlaces - strlen($value);
@@ -51,7 +51,7 @@ class Money
 
         $value = preg_replace('/(?<=\\d)(?=(\\d{3})+(?!\\d))/', $thousandsSeparator, $value);
 
-        if( $value[0] === $decimalPoint ) {
+        if ($value[0] === $decimalPoint) {
             $value = '0' . $value;
         }
 
@@ -86,7 +86,7 @@ class Money
      */
     public function divide($divisor)
     {
-        if( $divisor instanceof Money ) {
+        if ($divisor instanceof Money) {
             return $this->mathProvider->divide( $this->getValue(), $divisor->getValue(), MathProvider::ROUND_MODE_NONE );
         } else {
             return new static( $this->mathProvider->divide( $this->getValue(), (string) $divisor ), $this->mathProvider );
@@ -102,18 +102,18 @@ class Money
      */
     public function multiply($multiplicand)
     {
-        if( !is_scalar($multiplicand) ) {
+        if (!is_scalar($multiplicand)) {
             throw new InvalidMultiplicandException('Invalid multiplicand of type ' . gettype($multiplicand) . ' passed to Money::multiply');
         }
         return new static( $this->mathProvider->multiply( $this->getValue(), (string) $multiplicand ), $this->mathProvider );
     }
-    
+
     /**
      * Returns a new Money object that contains the absolute value of $this
      */
     public function abs()
     {
-        if( $this->lessThan(0) ) { 
+        if ($this->lessThan(0)) {
             return $this->multiply('-1');
         } else {
             return $this->multiply('1');
@@ -127,7 +127,7 @@ class Money
      */
     public function equals($money)
     {
-        if( $money instanceof Money ) {
+        if ($money instanceof Money) {
             $money = $money->getValue();
         }
         return $this->mathProvider->compare( $this->getValue(), (string) $money ) === 0;
@@ -140,7 +140,7 @@ class Money
      */
     public function lessThan($money)
     {
-        if( $money instanceof Money ) {
+        if ($money instanceof Money) {
             $money = $money->getValue();
         }
         return $this->mathProvider->compare( $this->getValue(), (string) $money ) === -1;
@@ -153,7 +153,7 @@ class Money
      */
     public function greaterThan($money)
     {
-        if( $money instanceof Money ) {
+        if ($money instanceof Money) {
             $money = $money->getValue();
         }
         return $this->mathProvider->compare( $this->getValue(), (string) $money ) === 1;

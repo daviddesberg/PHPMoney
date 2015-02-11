@@ -36,13 +36,12 @@ class NativeMathProvider implements MathProvider
      */
     function multiply($a, $b, $roundingMode = self::ROUND_MODE_DEFAULT)
     {
-        if( self::ROUND_MODE_NONE === $roundingMode ) {
+        if (self::ROUND_MODE_NONE === $roundingMode) {
             return (string) ( (int) $a * (float) $b );
         }
-        if( !in_array( $roundingMode, array( self::ROUND_MODE_HALF_EVEN, self::ROUND_MODE_HALF_ODD, self::ROUND_MODE_HALF_DOWN, self::ROUND_MODE_HALF_UP ) ) ) {
+        if (!in_array( $roundingMode, array( self::ROUND_MODE_HALF_EVEN, self::ROUND_MODE_HALF_ODD, self::ROUND_MODE_HALF_DOWN, self::ROUND_MODE_HALF_UP ) )) {
             throw new InvalidRoundingModeException("Invalid rounding mode '{$roundingMode}' provided");
         }
-
         return (string) ( (int) round( (int) $a * (float) $b, 0, $roundingMode ) );
     }
 
@@ -55,10 +54,10 @@ class NativeMathProvider implements MathProvider
      */
     function divide($a, $b, $roundingMode = self::ROUND_MODE_DEFAULT)
     {
-        if( self::ROUND_MODE_NONE === $roundingMode ) {
+        if (self::ROUND_MODE_NONE === $roundingMode) {
             return (string) ( (int) $a / (float) $b );
         }
-        if( !in_array( $roundingMode, array( self::ROUND_MODE_HALF_EVEN, self::ROUND_MODE_HALF_ODD, self::ROUND_MODE_HALF_DOWN, self::ROUND_MODE_HALF_UP ) ) ) {
+        if (!in_array( $roundingMode, array( self::ROUND_MODE_HALF_EVEN, self::ROUND_MODE_HALF_ODD, self::ROUND_MODE_HALF_DOWN, self::ROUND_MODE_HALF_UP ) )) {
             throw new InvalidRoundingModeException("Invalid rounding mode '{$roundingMode}' provided");
         }
         return (string) ( (int) round( (int) $a / (float) $b, 0, $roundingMode ) );
@@ -73,9 +72,9 @@ class NativeMathProvider implements MathProvider
     {
         $a = (int) $a;
         $b = (int) $b;
-        if( $a === $b ) {
+        if ($a === $b) {
             return 0;
-        } elseif( $a < $b ) {
+        } elseif ($a < $b) {
             return -1;
         } else {
             return 1;

@@ -27,7 +27,6 @@ interface MathProvider
      */
     function add($a, $b);
 
-
     /**
      * @param $a string String representation of a value of the lowest unit of currency (i.e. cents). Must be whole number.
      * @param $b string String representation of cents. Must be whole number.
